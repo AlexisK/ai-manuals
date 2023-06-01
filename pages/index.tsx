@@ -1,16 +1,10 @@
-import Head from "next/head";
-import styles from "./index.module.css";
 import {MainPage} from "./ui/main-page";
+import {Template} from "../client/components";
 
 export default function Home() {
     return (
-        <div>
-            <Head>
-                <title>OpenAI Quickstart</title>
-            </Head>
-          <main className={styles.main}>
+        <Template>
             <MainPage/>
-          </main>
-        </div>
+        </Template>
     );
 }

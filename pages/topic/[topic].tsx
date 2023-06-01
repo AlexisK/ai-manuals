@@ -1,6 +1,7 @@
 import React from "react";
 import {useRouter} from 'next/router';
 import {getRouterValue, useArticle} from "../../client";
+import {Template} from "../../client/components";
 
 export const TopicPage: React.FC = () => {
     const router = useRouter();
@@ -8,10 +9,10 @@ export const TopicPage: React.FC = () => {
     const lang = getRouterValue(router, 'lang') ?? 'English';
     const { article, isLoading } = useArticle(topic, lang);
 
-    return <div>
+    return <Template>
         <div>Topic page: {topic} in { lang }</div>
         { isLoading ? <div>Loading...</div> : <div dangerouslySetInnerHTML={{__html: article}} />}
-    </div>
+    </Template>
 };
 
 export default TopicPage;
