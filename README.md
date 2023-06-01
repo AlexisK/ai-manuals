@@ -1,44 +1,49 @@
-# OpenAI API Quickstart - Node.js example app
+# AI Manuals
 
-This is an example pet name generator app used in the OpenAI API [quickstart tutorial](https://platform.openai.com/docs/quickstart). It uses the [Next.js](https://nextjs.org/) framework with [React](https://reactjs.org/). Check out the tutorial or follow the instructions below to get set up.
+This is an open project that aims to provide modern Neural Networks powered trainings/manuals on any topic.
 
-![Text box that says name my pet with an icon of a dog](https://user-images.githubusercontent.com/10623307/213887080-b2bc4645-7fdb-4dbd-ae42-efce00d0dc29.png)
+Based on OpenAI API example nextjs repo.
 
+### Quick start:
 
-## Setup
+* clone
+* add `.env` file with `OPENAI_API_KEY` ( see official doc: https://platform.openai.com/docs/quickstart/add-your-api-key )
+* `npm i`
+* `npm run dev`
 
-1. If you don’t have Node.js installed, [install it from here](https://nodejs.org/en/) (Node.js version >= 14.6.0 required)
+### Description and slides on current state:
 
-2. Clone this repository
+The current version allows a user to generate a manual on any topic, and then to get an explanation on any part of the initial answer with minimum clicks amount. it also stores all your manuals in a file locally for easy and fast access.
 
-3. Navigate into the project directory
+The basic UI looks like this (technical design, sorry):
+![Generating a manual](README-assets/img-loading-topic.png)
 
-   ```bash
-   $ cd openai-quickstart-node
-   ```
+And them when it finishes the generation like this:
+![UI overview](README-assets/img-overview.png)
 
-4. Install the requirements
+It also can explain any part of the manual - select any text and it will generate you an explanation based on the manual:
+![Explaining selected text](README-assets/img-explanation-of-selected.png)
 
-   ```bash
-   $ npm install
-   ```
+**Header** has 2 inputs form:  
 
-5. Make a copy of the example environment variables file
+1. The topic you are interested in like `"Security in nginx"` or `"Programming with NodeJS"`
+2. The language you want your manual to be in. This defaults to `English` .
 
-   On Linux systems: 
-   ```bash
-   $ cp .env.example .env
-   ```
-   On Windows:
-   ```powershell
-   $ copy .env.example .env
-   ```
-6. Add your [API key](https://platform.openai.com/account/api-keys) to the newly created `.env` file
+Upon submitting it will either generate a manual using OpenAI APIs, or just return a cached manual if it has one
 
-7. Run the app
+**The Sidebar** on the left shows all the cached manuals the system has for fast and easy access.
 
-   ```bash
-   $ npm run dev
-   ```
+And finally **the content window** shows the manual itself
 
-You should now be able to access the app at [http://localhost:3000](http://localhost:3000)! For the full context behind this example app, check out the [tutorial](https://platform.openai.com/docs/quickstart).
+### What it should be like ( plans? ):
+
+1. **Quality of prompts** - the prompts this use right now are made with ChatGPT help and ok, but could be better.
+2. **Manuals generation approach** - right now it generates the whole manual in one big request - I feel it is worth trying to generate appendix first, and then generate each section separately as user reads.
+3. **Sections with links** - the good manual should have sections and an ability to navigate them
+4. **Separate manuals, docs, and trainings** - There is difference between a need in a quick reminder vs the full learning
+5. **Interactive steps** - It would be great to have sort of exams powered by the same OpenAI APIs - and it can do this quite well!
+6. **Media** - generate images or get across internet
+7. **Deploy as a service** with accounts - google OAuth is enough 
+8. **Sharing good manuals**
+9. **Curated manuals**
+10. **Anything** - just anything :)
