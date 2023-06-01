@@ -3,18 +3,24 @@ import { useState } from "react";
 import styles from "./index.module.css";
 
 export default function Home() {
-  const [animalInput, setAnimalInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [topicInput, setTopicInput] = useState("");
+  const [langInput, setLangInput] = useState("English");
   const [result, setResult] = useState();
 
   async function onSubmit(event) {
     event.preventDefault();
     try {
+      setIsLoading(true);
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: animalInput }),
+        body: JSON.stringify({
+          topic: topicInput,
+          language: langInput,
+        }),
       });
 
       const data = await response.json();
@@ -23,11 +29,12 @@ export default function Home() {
       }
 
       setResult(data.result);
-      setAnimalInput("");
+      setIsLoading(false);
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
+      setIsLoading(false);
     }
   }
 
@@ -40,18 +47,26 @@ export default function Home() {
 
       <main className={styles.main}>
         <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3>
+        <h3>Generate Manual</h3>
         <form onSubmit={onSubmit}>
           <input
-            type="text"
-            name="animal"
-            placeholder="Enter an animal"
-            value={animalInput}
-            onChange={(e) => setAnimalInput(e.target.value)}
+              style={{ width: '320px' }}
+              type="text"
+              name="topic"
+              placeholder="Enter a topic"
+              value={topicInput}
+              onChange={(e) => setTopicInput(e.target.value)}
           />
-          <input type="submit" value="Generate names" />
+          <input
+              type="text"
+              name="language"
+              placeholder="Enter a language"
+              value={langInput}
+              onChange={(e) => setLangInput(e.target.value)}
+          />
+          <input type="submit" value="Generate manual" disabled={isLoading} />
         </form>
-        <div className={styles.result}>{result}</div>
+        <div className={styles.result} dangerouslySetInnerHTML={{__html: result}} />
       </main>
     </div>
   );
