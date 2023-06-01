@@ -51,6 +51,9 @@ export class ManualsStorage {
 
     async getNewManual(settings: ManualSettings) {
         const conversation: OpenAIMessage[] = [
+            {role: 'system', content: 'You generate very detailed manuals'},
+            {role: 'system', content: 'You provide output in HTML with links'},
+            {role: 'system', content: `You provide answers in ${settings.language} language`},
             {role: 'user', content: generatePrompt({topic: settings.topic, lang: settings.language})}
         ];
         const resp = await makeRequest(conversation);
@@ -67,7 +70,7 @@ export class ManualsStorage {
         const newManual: ManualData = {
             ...settings,
             article: content,
-            conversation: [...conversation, { role: 'system', content }],
+            conversation: [...conversation, { role: 'assistant', content }],
             clarifications: {}
         }
         return newManual;

@@ -5,7 +5,6 @@ export function generatePrompt({topic, lang}) {
 
 Please generate a comprehensive manual that provides step-by-step instructions, guidelines, and tips on how to effectively ${formattedTopic}. \
 Your manual should cover all aspects of the process, including preparation, execution, troubleshooting, and best practices. \
-Use ${lang} language, format output in HTML with links where applicable.
 
 Consider including the following sections in your manual:
 
@@ -18,5 +17,7 @@ Frequently Asked Questions (FAQs): Compile a list of commonly asked questions re
 Glossary: Include a glossary of relevant terms or jargon used in the manual to assist readers in understanding the terminology.
 Additional Resources: Provide a list of recommended books, websites, videos, or other resources that readers can explore for further learning or reference.
 Please ensure that the generated manual is clear, concise, and user-friendly. Focus on providing accurate information and helpful guidance to enable readers to successfully perform the ${formattedTopic}.
+
+Use ${lang} language, format output in HTML with links where applicable.
 `; // Feel free to use your creativity and expertise to generate the best manual possible.
 }
