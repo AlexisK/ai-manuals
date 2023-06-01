@@ -2,6 +2,7 @@ import path from "path";
 import * as fs from "fs";
 import {generatePrompt} from "./generatePrompt";
 import {makeRequest} from "./makeRequest";
+import {getContent} from "./getContent";
 
 const manualsSaveFilePath = path.join(__dirname, '../../../../manuals-save.json');
 
@@ -38,7 +39,12 @@ export class ManualsStorage {
         fs.writeFileSync(manualsSaveFilePath, JSON.stringify(this.storage), {encoding: 'utf8'});
     }
 
-    async getManual(settings: ManualSettings): Promise<string> {
+    async getManual(settings: ManualSettings): Promise<ManualData|undefined> {
+        const key = `${settings.topic}:${settings.language}`;
+        return this.storage[key];
+    }
+
+    async getOrCreateManual(settings: ManualSettings): Promise<ManualData> {
         const key = `${settings.topic}:${settings.language}`;
 
         if (!this.storage[key]) {
@@ -52,25 +58,21 @@ export class ManualsStorage {
     async getNewManual(settings: ManualSettings) {
         const conversation: OpenAIMessage[] = [
             {role: 'system', content: 'You generate very detailed manuals'},
-            {role: 'system', content: 'You provide output in HTML with links'},
-            {role: 'system', content: `You provide answers in ${settings.language} language`},
             {role: 'user', content: generatePrompt({topic: settings.topic, lang: settings.language})}
         ];
         const resp = await makeRequest(conversation);
-        if ( !resp?.choices && resp?.error?.message ) {
-            console.log(resp);
-            throw new Error(resp?.error?.message);
-        }
-        const content = resp?.choices[0]?.message?.content;
-        if ( !content ) {
-            console.log(resp);
-            throw new Error('No content found!');
-        }
+        const content = getContent(resp);
 
         const newManual: ManualData = {
             ...settings,
             article: content,
-            conversation: [...conversation, { role: 'assistant', content }],
+            conversation: [
+                ...conversation,
+                {
+                    role: 'assistant',
+                    content: content.replace(/<[^>]+>/g, '') // replace html with text
+                }
+            ],
             clarifications: {}
         }
         return newManual;

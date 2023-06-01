@@ -4,6 +4,7 @@ export async function makeRequest(messages) {
     if (!apiKey) {
         throw new Error('No API key! Add .env file with OPENAI_API_KEY');
     }
+    console.log('Requesting', messages);
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -15,5 +16,7 @@ export async function makeRequest(messages) {
             messages,
         })
     });
-    return resp.json();
+    const result = await resp.json();
+    console.log(result);
+    return result;
 }

@@ -1,6 +1,7 @@
-import {manualsStorage} from "../../../server";
+import {filterInput, manualsStorage} from "../../server";
 
 const apiKey = process.env.OPENAI_API_KEY;
+
 
 export default async function (req, res) {
     if (!apiKey) {
@@ -12,8 +13,8 @@ export default async function (req, res) {
         return;
     }
 
-    const topic = (req.body.topic ?? '').replace(':', '').trim();
-    const language = (req.body.language ?? 'English').replace(':', '').trim();
+    const topic = filterInput(req, 'topic');
+    const language = filterInput(req, 'language') ?? 'English';
 
     if (topic.length === 0) {
         res.status(400).json({
@@ -25,7 +26,7 @@ export default async function (req, res) {
     }
 
     try {
-        res.status(200).json(await manualsStorage.getManual({ topic, language }));
+        res.status(200).json(await manualsStorage.getOrCreateManual({ topic, language }));
     } catch(error) {
         // Consider adjusting the error handling logic for your use case
         if (error.response) {
