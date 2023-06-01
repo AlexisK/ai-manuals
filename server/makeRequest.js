@@ -1,5 +1,3 @@
-import {fetch} from "next/dist/compiled/@edge-runtime/primitives/fetch";
-
 const apiKey = process.env.OPENAI_API_KEY;
 
 export async function makeRequest(messages) {

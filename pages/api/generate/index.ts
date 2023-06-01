@@ -1,7 +1,4 @@
-import {fetch} from "next/dist/compiled/@edge-runtime/primitives/fetch";
-import {generatePrompt} from "./generatePrompt";
-import {makeRequest} from "./makeRequest";
-import {manualsStorage} from "./manuals-storage";
+import {manualsStorage} from "../../../server";
 
 const apiKey = process.env.OPENAI_API_KEY;
 
@@ -16,7 +13,7 @@ export default async function (req, res) {
     }
 
     const topic = (req.body.topic ?? '').replace(':', '').trim();
-    const lang = (req.body.language ?? 'English').replace(':', '').trim();
+    const language = (req.body.language ?? 'English').replace(':', '').trim();
 
     if (topic.length === 0) {
         res.status(400).json({
@@ -28,7 +25,7 @@ export default async function (req, res) {
     }
 
     try {
-        res.status(200).json(await manualsStorage.getManual(topic, lang));
+        res.status(200).json(await manualsStorage.getManual({ topic, language }));
     } catch(error) {
         // Consider adjusting the error handling logic for your use case
         if (error.response) {
