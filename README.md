@@ -24,6 +24,9 @@ And them when it finishes the generation like this:
 It also can explain any part of the manual - select any text and it will generate you an explanation based on the manual:
 ![Explaining selected text](README-assets/img-explanation-of-selected.png)
 
+Explanations are given with the context of the manual itself:
+![Explaining context](README-assets/img-explanation-context.png)
+
 **Header** has 2 inputs form:  
 
 1. The topic you are interested in like `"Security in nginx"` or `"Programming with NodeJS"`
